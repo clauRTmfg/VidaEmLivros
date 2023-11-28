@@ -8,24 +8,17 @@ import br.com.crtalmeida.vidaemlivros.database.model.Livro
 import br.com.crtalmeida.vidaemlivros.ui.components.BottomAppBarItem
 
 fun NavGraphBuilder.homeGraph(
-    //context: Context,
     onNavegaParaDetalhes: (Livro) -> Unit
-    //onNavegaParaBuscaLivros: () -> Unit,
-    //login: () -> Unit,
 ) {
     navigation(
         startDestination = Destino.MeusLivros.rota,
         route = Destino.HomeGraph.rota
     ) {
-        MeusLivros(
-            //context,
+        meusLivrosGraph(
             onNavegaParaDetalhes
-            //login
         )
-        ListaDesejos(
-            //context,
+        listaDesejosGraph(
             onNavegaParaDetalhes
-            //login
         )
     }
 }

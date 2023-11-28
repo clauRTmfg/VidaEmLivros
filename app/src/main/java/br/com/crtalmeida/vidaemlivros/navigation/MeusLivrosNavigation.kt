@@ -11,10 +11,8 @@ import br.com.crtalmeida.vidaemlivros.database.model.Livro
 import br.com.crtalmeida.vidaemlivros.ui.screens.MeusLivrosScreen
 import br.com.crtalmeida.vidaemlivros.ui.viewmodels.MeusLivrosViewModel
 
-fun NavGraphBuilder.MeusLivros(
-    //context: Context,
+fun NavGraphBuilder.meusLivrosGraph(
     onNavegaParaDetalhes: (Livro) -> Unit
-    //login: () -> Unit,
 ) {
     composable(route = Destino.MeusLivros.rota) {
         val viewModel = hiltViewModel<MeusLivrosViewModel>()

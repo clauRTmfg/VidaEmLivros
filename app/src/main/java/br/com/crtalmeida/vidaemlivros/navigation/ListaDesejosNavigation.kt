@@ -9,14 +9,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import br.com.crtalmeida.vidaemlivros.database.model.Livro
 import br.com.crtalmeida.vidaemlivros.ui.screens.ListaDesejosScreen
-import br.com.crtalmeida.vidaemlivros.ui.screens.MeusLivrosScreen
 import br.com.crtalmeida.vidaemlivros.ui.viewmodels.ListaDesejosViewModel
-import br.com.crtalmeida.vidaemlivros.ui.viewmodels.MeusLivrosViewModel
 
-fun NavGraphBuilder.ListaDesejos(
-    //context: Context,
+fun NavGraphBuilder.listaDesejosGraph(
     onNavegaParaDetalhes: (Livro) -> Unit
-    //login: () -> Unit,
 ) {
     composable(route = Destino.ListaDesejos.rota) {
         val viewModel = hiltViewModel<ListaDesejosViewModel>()

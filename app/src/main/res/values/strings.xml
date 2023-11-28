@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">VidaEmLivros</string>
+    <string name="nome_do_app">Vida Em Livros</string>
+    <string name="titulo_cadastro_livro">Adicionar livro</string>
+    <string name="titulo_editar_livro">Editar livro</string>
+    <string name="nome">Nome</string>
+    <string name="autor">Autor</string>
+    <string name="editora">Editora</string>
+    <string name="detalhes">Detalhes</string>
+    <string name="adicionar_imagem">Adicionar imagem</string>
+    <string name="salvar">Salvar</string>
+    <string name="categoria">Categoria</string>
+    <string name="formato">Formato</string>
+    <string name="leituras">Leituras</string>
+    <string name="inicio_leitura">Início da leitura</string>
+    <string name="fim_leitura">Fim da Leitura</string>
+    <string name="voltar">Voltar</string>
+    <string name="editar">Editar</string>
+    <string name="excluir">Excluir</string>
+    <string name="imagem_capa_livro">Imagem da capa do livro</string>
+    <string name="tem_certeza">Tem certeza?</string>
+    <string name="minha_estante">Minha estante</string>
+    <string name="lista_de_desejos">Lista de desejos</string>
+
+    <string name="link_imagem">Link da imagem</string>
+    <string name="mensagem">Mensagem</string>
+    <string name="ligar">Ligar</string>
+    <string name="informacoes">Informações</string>
+    <string name="entrar">Entrar</string>
+    <string name="criar">Criar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="adicionar_novo_contato">Adicionar novo contato</string>
+    <string name="logo_do_app">Logo do aplicativo</string>
+    <string name="usuario_ja_existe">Nome de usuário já existe, escolha outro</string>
+    <string name="pesquisar_contatos">Buscar contatos</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="descricao_icone_pessoa_configuracao">Pessoa com símbolo de configuração</string>
+    <string name="fechar">Fechar</string>
+    <string name="buscar">Buscar</string>
 </resources>

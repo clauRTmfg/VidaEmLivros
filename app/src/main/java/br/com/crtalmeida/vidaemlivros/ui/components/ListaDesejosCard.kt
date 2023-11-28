@@ -15,28 +15,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.crtalmeida.vidaemlivros.R
 import br.com.crtalmeida.vidaemlivros.database.model.Livro
-import br.com.crtalmeida.vidaemlivros.sampledata.sampleLivroComImagem
-import br.com.crtalmeida.vidaemlivros.sampledata.sampleLivroSemImagem
+import br.com.crtalmeida.vidaemlivros.util.sampleLivroDesejo
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
 import coil.compose.AsyncImage
-import br.com.crtalmeida.vidaemlivros.R
 
 @Composable
-fun LivroCard(
+fun ListaDesejosCard(
     livro: Livro,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier
             .fillMaxWidth()
-            .height(80.dp)
+            .height(100.dp)
     ) {
         Row {
+            livro.imagem?.let { image ->
+                AsyncImage(
+                    model = image,
+                    contentDescription = null,
+                    Modifier
+                        .width(80.dp)
+                        .fillMaxHeight(),
+                    placeholder = painterResource(id = R.drawable.placeholder),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Column(
                 Modifier
                     .padding(16.dp)
@@ -56,18 +67,7 @@ fun LivroCard(
                     Modifier.fillMaxWidth(),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    fontWeight = FontWeight(400)
-                )
-            }
-            livro.imagem?.let { image ->
-                AsyncImage(
-                    model = image,
-                    contentDescription = null,
-                    Modifier
-                        .width(80.dp)
-                        .fillMaxHeight(),
-                    placeholder = painterResource(id = R.drawable.placeholder),
-                    contentScale = ContentScale.Crop
+                    fontWeight = FontWeight(400),
                 )
             }
         }
@@ -76,20 +76,10 @@ fun LivroCard(
 
 @Preview
 @Composable
-fun MenuProductCardPreview() {
+fun ListaDesejosCardPreview() {
     VidaEmLivrosTheme {
-        LivroCard(
-            livro = sampleLivroSemImagem
-        )
-    }
-}
-
-@Preview
-@Composable
-fun MenuProductCardWithImagePreview() {
-    VidaEmLivrosTheme {
-        LivroCard(
-            livro = sampleLivroComImagem
+        MeusLivrosCard(
+            livro = sampleLivroDesejo
         )
     }
 }

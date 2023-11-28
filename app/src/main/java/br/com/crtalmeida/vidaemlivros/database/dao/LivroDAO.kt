@@ -28,7 +28,7 @@ interface LivroDAO {
 //    @Query("SELECT * FROM Contato WHERE idUsuario = :usuarioAtual")
 //    fun buscaTodosPorUsuario(usuarioAtual: String): Flow<List<Contato>>
 
-    @Query("SELECT * FROM Livro WHERE nome LIKE :valorBusca||'%'")
-    fun buscaTodosPorNome(valorBusca: String):
-            Flow<List<Livro>>
+    @Query("SELECT * FROM Livro WHERE (nome LIKE :valorBusca||'%' OR autor LIKE :valorBusca||'%') AND adquirido = :adquirido")
+    fun buscaPorNomeEAutor(valorBusca: String, adquirido: Long): Flow<List<Livro>>
+
 }

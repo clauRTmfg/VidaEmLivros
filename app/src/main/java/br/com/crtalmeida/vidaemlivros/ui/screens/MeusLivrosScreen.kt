@@ -13,28 +13,31 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.crtalmeida.vidaemlivros.R
 import br.com.crtalmeida.vidaemlivros.database.model.Livro
-import br.com.crtalmeida.vidaemlivros.sampledata.sampleLivros
-import br.com.crtalmeida.vidaemlivros.ui.components.LivroCard
+import br.com.crtalmeida.vidaemlivros.ui.components.MeusLivrosCard
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
 import br.com.crtalmeida.vidaemlivros.ui.theme.caveatFont
 import br.com.crtalmeida.vidaemlivros.ui.uistate.MeusLivrosUIState
+import br.com.crtalmeida.vidaemlivros.util.sampleLivros
 
 @Composable
 fun MeusLivrosScreen(
     modifier: Modifier = Modifier,
-    title: String = "Minha biblioteca",
+    title: String = stringResource(R.string.minha_estante),
     onLivroClick: (Livro) -> Unit = {},
     state: MeusLivrosUIState = MeusLivrosUIState()
 ) {
-    //val livros = state.livros
-    val livros = sampleLivros
+
+    //val livros = sampleLivros + state.livros
+    val livros = state.livros
 
     Column(
         modifier
@@ -58,13 +61,15 @@ fun MeusLivrosScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(livros) {livro ->
-                LivroCard(
+                MeusLivrosCard(
                     livro = livro,
-                    Modifier.semantics {
-                        contentDescription = "livro da minha biblioteca"
-                    }.clickable {
-                        onLivroClick(livro)
-                    }
+                    Modifier
+                        .semantics {
+                            contentDescription = "livro da minha biblioteca"
+                        }
+                        .clickable {
+                            onLivroClick(livro)
+                        }
                 )
             }
         }
@@ -77,7 +82,7 @@ fun MeusLivrosScreenPreview() {
     VidaEmLivrosTheme {
         Surface {
             MeusLivrosScreen(
-                title = "Minha biblioteca",
+                title = stringResource(R.string.minha_estante),
                 state = MeusLivrosUIState(livros = sampleLivros)
             )
         }

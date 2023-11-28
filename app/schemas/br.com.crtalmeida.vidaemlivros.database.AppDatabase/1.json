@@ -1,0 +1,100 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "c192c3f3c855a26cdc1bf350d089941e",
+    "entities": [
+      {
+        "tableName": "Livro",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nome` TEXT NOT NULL, `autor` TEXT NOT NULL, `editora` TEXT NOT NULL, `imagem` TEXT NOT NULL, `formato` TEXT NOT NULL, `adquirido` INTEGER NOT NULL, `leituras` INTEGER NOT NULL, `inicioLeitura` TEXT, `fimLeitura` TEXT, `detalhes` TEXT NOT NULL, `categoria` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nome",
+            "columnName": "nome",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autor",
+            "columnName": "autor",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "editora",
+            "columnName": "editora",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imagem",
+            "columnName": "imagem",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "formato",
+            "columnName": "formato",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "adquirido",
+            "columnName": "adquirido",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "leituras",
+            "columnName": "leituras",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inicioLeitura",
+            "columnName": "inicioLeitura",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fimLeitura",
+            "columnName": "fimLeitura",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "detalhes",
+            "columnName": "detalhes",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoria",
+            "columnName": "categoria",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c192c3f3c855a26cdc1bf350d089941e')"
+    ]
+  }
+}

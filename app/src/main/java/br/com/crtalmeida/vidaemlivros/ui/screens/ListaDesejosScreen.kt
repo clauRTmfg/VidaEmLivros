@@ -13,28 +13,31 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.crtalmeida.vidaemlivros.R
 import br.com.crtalmeida.vidaemlivros.database.model.Livro
-import br.com.crtalmeida.vidaemlivros.sampledata.sampleDesejos
-import br.com.crtalmeida.vidaemlivros.ui.components.LivroCard
+import br.com.crtalmeida.vidaemlivros.ui.components.ListaDesejosCard
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
 import br.com.crtalmeida.vidaemlivros.ui.theme.caveatFont
 import br.com.crtalmeida.vidaemlivros.ui.uistate.ListaDesejosUIState
+import br.com.crtalmeida.vidaemlivros.util.sampleDesejos
 
 @Composable
 fun ListaDesejosScreen(
     modifier: Modifier = Modifier,
-    title: String = "Lista de Desejos",
+    title: String = stringResource(R.string.lista_de_desejos),
     onLivroClick: (Livro) -> Unit = {},
     state: ListaDesejosUIState = ListaDesejosUIState()
 ) {
-    //val livros = state.livros
-    val livros = sampleDesejos
+
+    //val livros = sampleDesejos + state.livros
+    val livros = state.livros
 
     Column(
         modifier
@@ -58,7 +61,7 @@ fun ListaDesejosScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(livros) {livro ->
-                LivroCard(
+                ListaDesejosCard(
                     livro = livro,
                     Modifier.semantics {
                         contentDescription = "livro pra adquirir"
@@ -77,7 +80,7 @@ fun ListaDesejosScreenPreview() {
     VidaEmLivrosTheme {
         Surface {
             ListaDesejosScreen(
-                title = "Lista de Desejos",
+                title = stringResource(R.string.lista_de_desejos),
                 state = ListaDesejosUIState(livros = sampleDesejos)
             )
         }

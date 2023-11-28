@@ -8,13 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.LibraryAdd
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -23,7 +20,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,13 +35,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import br.com.crtalmeida.vidaemlivros.navigation.Destino
 import br.com.crtalmeida.vidaemlivros.navigation.VidaEmLivrosNavHost
+import br.com.crtalmeida.vidaemlivros.navigation.navegaParaFormularioLivro
 import br.com.crtalmeida.vidaemlivros.navigation.navigateToBottomAppBarItemSelected
+import br.com.crtalmeida.vidaemlivros.navigation.navigateToBuscaLivros
 import br.com.crtalmeida.vidaemlivros.ui.components.BottomAppBarItem
 import br.com.crtalmeida.vidaemlivros.ui.components.VidaEmLivrosBottomAppBar
+import br.com.crtalmeida.vidaemlivros.ui.components.VidaEmLivrosTopAppBar
 import br.com.crtalmeida.vidaemlivros.ui.components.bottomAppBarItems
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
+import br.com.crtalmeida.vidaemlivros.util.FORMULARIO_KEY
+import br.com.crtalmeida.vidaemlivros.util.REMOCAO_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -72,36 +74,45 @@ fun VidaEmLivrosApp(navController: NavHostController = rememberNavController()) 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
+    // O CÓDIGO ABAIXO É SERVE APENAS PARA ANÁLISE DAS NAVEGAÇÕES PELO LOGCAT
     // LaunchedEffect (coroutine): este escopo não é reexecutado na recomposição .
     // Usamos o addOnDestinationChangedListener/backQueue para termos a lista
     // de rotas clicadas
-    LaunchedEffect(Unit) {
-        navController.addOnDestinationChangedListener { _, _, _ ->
-            navController.currentBackStack.value.map {
-                it.destination.route
-            }
-        }
-    }
+//    LaunchedEffect(Unit) {
+//        navController.addOnDestinationChangedListener { _, _, _ ->
+//            navController.currentBackStack.value.map {
+//                it.destination.route
+//            }
+//        }
+//    }
 
     val backStackEntryState by navController.currentBackStackEntryAsState()
-    val orderDoneMsg = backStackEntryState
+    val msgAlteracoes = backStackEntryState
         ?.savedStateHandle
-        ?.getStateFlow<String?>("order_done", null)
+        ?.getStateFlow<String?>(FORMULARIO_KEY, null)
         ?.collectAsState()
-    //backStackEntryState?.savedStateHandle?.remove<String?>("order_done")
-
-    // aqui o codigo que traz o item atual selecionado
-    val currentDestination = backStackEntryState?.destination
+    val msgRemocao = backStackEntryState
+        ?.savedStateHandle
+        ?.getStateFlow<String?>(REMOCAO_KEY, null)
+        ?.collectAsState()
+    //backStackEntryState?.savedStateHandle?.remove<String?>("alteracoes_ok")
 
     val snackbarHostState = remember {
         SnackbarHostState()
     }
-    orderDoneMsg?.value?.let {
+    msgAlteracoes?.value?.let {
+        scope.launch {
+            snackbarHostState.showSnackbar(message = it)
+        }
+    }
+    msgRemocao?.value?.let {
         scope.launch {
             snackbarHostState.showSnackbar(message = it)
         }
     }
 
+    // aqui o codigo que traz o item atual selecionado
+    val currentDestination = backStackEntryState?.destination
     val currentRoute = currentDestination?.route
     val selectedItem by remember(currentDestination) {
         val item = when (currentRoute) {
@@ -129,7 +140,15 @@ fun VidaEmLivrosApp(navController: NavHostController = rememberNavController()) 
             navController.navigateToBottomAppBarItemSelected(item)
         },
         onFabClick = {
-            //navController.navegaParaNovoLivro()
+            navController.navegaParaFormularioLivro()
+        },
+        onClickMenu = {},
+        onClickBusca = {
+            val navOptions = navOptions {
+                launchSingleTop = true
+                popUpTo(Destino.BuscaLivros.rota)
+            }
+            navController.navigateToBuscaLivros(currentRoute,navOptions)
         },
         showTopBar = showAppBar,
         showBottomBar = showAppBar,
@@ -148,10 +167,11 @@ fun VidaEmLivrosApp(
     bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
     onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
     onFabClick: () -> Unit = {},
-    onLogout: () -> Unit = {},
+    onClickMenu: () -> Unit = {},
+    onClickBusca: () -> Unit = {},
     showTopBar: Boolean = false,
     showBottomBar: Boolean = false,
-    showFab: Boolean = false,
+    showFab: Boolean= false,
     snackbarHostState: SnackbarHostState = SnackbarHostState(),
     // importante : o content de um Scaffold precisa ser o último parâmetro
     content: @Composable () -> Unit
@@ -160,30 +180,19 @@ fun VidaEmLivrosApp(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState) {
                 Snackbar(Modifier.padding(8.dp)) {
-                    Text(text = it.visuals.message,
+                    Text(
+                        text = it.visuals.message,
                         Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Center)
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         },
         topBar = {
             if (showTopBar) {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(text = "Vida em Livros")
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = onLogout,
-                            Modifier.semantics {
-                                contentDescription = "botao logout"
-                            }) {
-                            Icon(
-                                Icons.Filled.ExitToApp,
-                                contentDescription = "sair do app"
-                            )
-                        }
-                    }
+                VidaEmLivrosTopAppBar(
+                    onClickMenu = onClickMenu,
+                    onClickBusca = onClickBusca
                 )
             }
         },
