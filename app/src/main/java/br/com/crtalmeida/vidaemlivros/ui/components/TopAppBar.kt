@@ -5,19 +5,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.Bookmarks
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Mail
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,9 +38,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
 import br.com.crtalmeida.vidaemlivros.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VidaEmLivrosTopAppBar(
-    onClickMenu: () -> Unit,
+    onClickMenu: (String) -> Unit,
     onClickBusca: () -> Unit,
     iconAndTextColor: Color = Color.DarkGray
 ) {
@@ -48,6 +51,7 @@ fun VidaEmLivrosTopAppBar(
     val contextForToast = LocalContext.current.applicationContext
 
     var expanded by remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf<MenuItemData?>(null) }
 
     TopAppBar(
         title = { Text(text = stringResource(id = R.string.nome_do_app)) },
@@ -73,9 +77,7 @@ fun VidaEmLivrosTopAppBar(
                 DropdownMenu(
                     modifier = Modifier.width(width = 150.dp),
                     expanded = expanded,
-                    onDismissRequest = {
-                        expanded = false
-                    },
+                    onDismissRequest = { expanded = false },
                     // adjust the position
                     offset = DpOffset(x = (-102).dp, y = (-64).dp),
                     properties = PopupProperties()
@@ -84,33 +86,29 @@ fun VidaEmLivrosTopAppBar(
                     // adding each menu item
                     listItems.forEach { menuItemData ->
                         DropdownMenuItem(
-                            onClick = {
-                                Toast.makeText(contextForToast, menuItemData.text, Toast.LENGTH_SHORT)
-                                    .show()
-                                expanded = false
+                            text = {
+                                Text(
+                                    text = menuItemData.text,
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    color = iconAndTextColor
+                                )
                             },
-                            enabled = true
-                        ) {
-
-                            Icon(
-                                imageVector = menuItemData.icon,
-                                contentDescription = menuItemData.text,
-                                tint = iconAndTextColor
-                            )
-
-                            Spacer(modifier = Modifier.width(width = 8.dp))
-
-                            Text(
-                                text = menuItemData.text,
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 16.sp,
-                                color = iconAndTextColor
-                            )
-                        }
+                            onClick = {
+//                                Toast.makeText(contextForToast, menuItemData.text, Toast.LENGTH_SHORT)
+//                                    .show()
+                                expanded = false
+                                selectedItem = menuItemData
+                                onClickMenu(menuItemData.text)
+                            },
+                            leadingIcon = {
+                                if (selectedItem == menuItemData) {
+                                    Icon(Icons.Default.Check, contentDescription = null)
+                                }
+                            }
+                        )
                     }
                 }
-
-                Spacer(modifier = Modifier.size(8.dp))
             }
         }
     )

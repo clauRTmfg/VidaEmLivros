@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
+import br.com.crtalmeida.vidaemlivros.util.DESEJOS
+import br.com.crtalmeida.vidaemlivros.util.ESTANTE
 
 // o modificador sealed impede que outros objetos BottomAppBarItem
 // sejam criados fora desta classe
@@ -20,12 +22,12 @@ sealed class BottomAppBarItem(
     val icon: ImageVector
 ) {
     object MeusLivros: BottomAppBarItem(
-        label = "Biblioteca",
+        label = ESTANTE,
         icon = Icons.Filled.LibraryBooks
     )
 
     object Desejos: BottomAppBarItem(
-        label = "Desejos",
+        label = DESEJOS,
         icon = Icons.Filled.Favorite
     )
 

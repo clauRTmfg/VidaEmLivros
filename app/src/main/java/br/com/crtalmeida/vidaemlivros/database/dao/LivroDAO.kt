@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.RawQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import br.com.crtalmeida.vidaemlivros.database.model.Livro
 import kotlinx.coroutines.flow.Flow
 
@@ -12,6 +14,9 @@ interface LivroDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insere(livro: Livro)
+
+    @RawQuery(observedEntities = arrayOf(Livro::class))
+    fun buscaLivros(query: SupportSQLiteQuery): Flow<List<Livro>>
 
     @Query("SELECT * FROM Livro WHERE adquirido = 1")
     fun buscaMeusLivros(): Flow<List<Livro>>

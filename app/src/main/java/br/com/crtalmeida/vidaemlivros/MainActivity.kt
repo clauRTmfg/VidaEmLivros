@@ -1,6 +1,7 @@
 package br.com.crtalmeida.vidaemlivros
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -41,12 +42,14 @@ import br.com.crtalmeida.vidaemlivros.navigation.VidaEmLivrosNavHost
 import br.com.crtalmeida.vidaemlivros.navigation.navegaParaFormularioLivro
 import br.com.crtalmeida.vidaemlivros.navigation.navigateToBottomAppBarItemSelected
 import br.com.crtalmeida.vidaemlivros.navigation.navigateToBuscaLivros
+import br.com.crtalmeida.vidaemlivros.navigation.navigateToMeusLivros
 import br.com.crtalmeida.vidaemlivros.ui.components.BottomAppBarItem
 import br.com.crtalmeida.vidaemlivros.ui.components.VidaEmLivrosBottomAppBar
 import br.com.crtalmeida.vidaemlivros.ui.components.VidaEmLivrosTopAppBar
 import br.com.crtalmeida.vidaemlivros.ui.components.bottomAppBarItems
 import br.com.crtalmeida.vidaemlivros.ui.theme.VidaEmLivrosTheme
 import br.com.crtalmeida.vidaemlivros.util.FORMULARIO_KEY
+import br.com.crtalmeida.vidaemlivros.util.ID_QUERY
 import br.com.crtalmeida.vidaemlivros.util.REMOCAO_KEY
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -142,7 +145,8 @@ fun VidaEmLivrosApp(navController: NavHostController = rememberNavController()) 
         onFabClick = {
             navController.navegaParaFormularioLivro()
         },
-        onClickMenu = {},
+        onClickMenu = {
+        },
         onClickBusca = {
             val navOptions = navOptions {
                 launchSingleTop = true
@@ -167,7 +171,7 @@ fun VidaEmLivrosApp(
     bottomAppBarItemSelected: BottomAppBarItem = bottomAppBarItems.first(),
     onBottomAppBarItemSelectedChange: (BottomAppBarItem) -> Unit = {},
     onFabClick: () -> Unit = {},
-    onClickMenu: () -> Unit = {},
+    onClickMenu: (String) -> Unit = {},
     onClickBusca: () -> Unit = {},
     showTopBar: Boolean = false,
     showBottomBar: Boolean = false,
